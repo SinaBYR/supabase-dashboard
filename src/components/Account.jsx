@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../supabase/supabaseClient"
+import { Avatar } from "./Avatar"
 import { Modal } from "./Modal"
 
 export function Account({ session }) {
@@ -73,6 +74,18 @@ export function Account({ session }) {
     <div className="form-widget">
         {isModalActive &&
             <Modal deactivate={() => setIsModalActive(false)} message={error}/>}
+
+        <Avatar
+            url={avatarUrl}
+            size={150}
+            onError={(message) => {
+                setError(message)
+                setIsModalActive(true)
+            }}
+            onUpload={(url) => {
+                setAvatarUrl(url)
+                updateProfile({ username, website, avatar_url: url })
+            }}/>
         <div>
             <label htmlFor="email">Email</label>
             <input id="email" type="text" value={session.user.email} disabled />
